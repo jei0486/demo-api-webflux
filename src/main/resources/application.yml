@@ -1,0 +1,40 @@
+server:
+  port: 8088
+
+spring:
+  application:
+    name: demo-api
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    url: jdbc:mariadb://127.0.0.1:3306/demo_board?characterEncoding=UTF-8
+    driverClassName: org.mariadb.jdbc.Driver
+    username: board
+    password: osckorea!
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    hibernate:
+      ddl-auto: none
+
+jdbc:
+  connection:
+    pool:
+      size: 5
+
+logging:
+  level:
+    org:
+      springframework.web.reactive.function.client.ExchangeFunctions: DEBUG
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%-5level] [%t] %logger{36} - %msg%n"
+  #    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] - %msg%n"
+  #    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+  #  file: application.log
