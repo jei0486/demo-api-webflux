@@ -1,5 +1,6 @@
 package com.demo.api.config;
 
+import com.demo.api.domain.Board;
 import com.demo.api.domain.BoardRepository;
 import com.demo.api.service.BoardHandler;
 import org.springframework.boot.web.embedded.netty.NettyReactiveWebServerFactory;
@@ -15,6 +16,9 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.concurrent.Executors;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.web.reactive.function.server.RequestPredicates.accept;
 
 
 @Configuration
@@ -32,9 +36,12 @@ public class WebServerConfig {
 
     @Bean
     RouterFunction<ServerResponse> routerFunction(BoardHandler boardHandler) {
-
         return RouterFunctions.route()
+                .GET("/board",accept(APPLICATION_JSON),boardHandler::list)
+                .GET("/board/{boardId}",accept(APPLICATION_JSON),boardHandler::show)
                 .POST("/board/insert", boardHandler::save)
+                .DELETE("/board/{boardId}",boardHandler::delete)
+                //.PUT("/board/{boardId}",accept(APPLICATION_JSON),boardHandler::update)
                 .build();
     }
 

@@ -4,9 +4,8 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@ToString
-@Getter
-@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class Board {
     private Long seq;
