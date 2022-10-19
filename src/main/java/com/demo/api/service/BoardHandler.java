@@ -26,7 +26,7 @@ public class BoardHandler {
 
     final BoardRepository boardRepository;
 
-    final Scheduler scheduler;
+    //final Scheduler scheduler;
 
     // 게시물 작성
     public Mono<ServerResponse> save(ServerRequest request) {
@@ -39,13 +39,13 @@ public class BoardHandler {
                         .subject(board.getSubject())
                         .content(board.getContent())
                         .build())))
-                .publishOn(scheduler)
+                .publishOn(Schedulers.boundedElastic())
                 .flatMap(board -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).bodyValue(board));
     }
 
     // 게시물 리스트
     public Mono<ServerResponse> list(ServerRequest request) {
-        Flux<BoardEntity> boardFlux = Flux.defer(() -> Flux.fromIterable(boardRepository.findAll())).subscribeOn(scheduler);
+        Flux<BoardEntity> boardFlux = Flux.defer(() -> Flux.fromIterable(boardRepository.findAll())).subscribeOn(Schedulers.boundedElastic());
 
         return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(boardFlux, BoardEntity.class);
     }
@@ -54,7 +54,7 @@ public class BoardHandler {
     public Mono<ServerResponse> show(ServerRequest request) {
         Long boardId = Long.valueOf(request.pathVariable("boardId"));
         return Mono.fromCallable(() -> this.boardRepository.findById(boardId).orElse(new BoardEntity()))
-                .publishOn(scheduler)
+                .publishOn(Schedulers.boundedElastic())
                 // fromValue (deprecated) > fromObject
                 .flatMap(board -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(fromValue(board)))
                 .switchIfEmpty(notFound().build());
