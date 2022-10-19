@@ -15,8 +15,7 @@ import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 
-
-import static org.springframework.web.reactive.function.BodyInserters.fromObject;
+import static org.springframework.web.reactive.function.BodyInserters.fromValue;
 import static org.springframework.web.reactive.function.server.ServerResponse.noContent;
 import static org.springframework.web.reactive.function.server.ServerResponse.notFound;
 
@@ -56,7 +55,8 @@ public class BoardHandler {
         Long boardId = Long.valueOf(request.pathVariable("boardId"));
         return Mono.fromCallable(() -> this.boardRepository.findById(boardId).orElse(new BoardEntity()))
                 .publishOn(scheduler)
-                .flatMap(board -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(fromObject(board)))
+                // fromValue (deprecated) > fromObject
+                .flatMap(board -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(fromValue(board)))
                 .switchIfEmpty(notFound().build());
     }
 
@@ -85,6 +85,20 @@ public class BoardHandler {
 //                        .body(BodyInserters.fromValue(modBoard)));
 //    }
 
+
+//    public Mono<ServerResponse> update(ServerRequest request) {
+//        Long boardId = Long.valueOf(request.pathVariable("boardId"));
+//        Mono<Board> boardMono = request.bodyToMono(Board.class);
+//
+//        return request.bodyToMono(Board.class)
+//                .flatMap(
+//                        board -> boardRepository.findById(boardId).stream().map(
+//                                boardEntity -> boardEntity.setSubject(board.getSubject())
+//                        )
+//                )
+//                .flatMap(modBoard -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
+//                        .body(BodyInserters.fromValue(modBoard)));
+//    }
 
 
 }
