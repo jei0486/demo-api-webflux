@@ -41,7 +41,7 @@ public class WebServerConfig {
                 .GET("/board/{boardId}",accept(APPLICATION_JSON),boardHandler::show)
                 .POST("/board/insert", boardHandler::save)
                 .DELETE("/board/{boardId}",boardHandler::delete)
-                //.PUT("/board/{boardId}",accept(APPLICATION_JSON),boardHandler::update)
+                .PUT("/board/{boardId}",accept(APPLICATION_JSON),boardHandler::update)
                 .build();
     }
 

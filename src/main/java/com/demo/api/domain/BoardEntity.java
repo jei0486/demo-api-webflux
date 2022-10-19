@@ -12,12 +12,11 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name="board")
 @Builder
-@Getter
-@Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
+@Data
 public class BoardEntity {
 
     @Id
@@ -26,7 +25,6 @@ public class BoardEntity {
     private String subject;
     private String content;
     private int hits;
-    private Character del_yn;
     private String ins_id;
 
     @CreatedDate

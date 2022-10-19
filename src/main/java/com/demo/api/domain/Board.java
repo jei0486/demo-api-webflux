@@ -12,7 +12,6 @@ public class Board {
     private String subject;
     private String content;
     private int hits;
-    private Character del_yn;
     private String ins_id;
     private LocalDateTime ins_date;
     private String mod_id;

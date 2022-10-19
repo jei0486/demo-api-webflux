@@ -5,6 +5,7 @@ import com.demo.api.domain.BoardEntity;
 import com.demo.api.domain.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -37,7 +38,6 @@ public class BoardHandler {
                         .ins_id(board.getIns_id())
                         .subject(board.getSubject())
                         .content(board.getContent())
-                        .del_yn(board.getDel_yn())
                         .build())))
                 .publishOn(scheduler)
                 .flatMap(board -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).bodyValue(board));
@@ -75,15 +75,16 @@ public class BoardHandler {
 
 
     // 게시물 수정
-//    public Mono<ServerResponse> update(ServerRequest request) {
-//        Long boardId = Long.valueOf(request.pathVariable("boardId"));
-//        Mono<Board> boardMono = request.bodyToMono(Board.class);
-//
-//        return request.bodyToMono(Board.class)
-//                .flatMap(board -> boardRepository.updateBoard(board))
-//                .flatMap(modBoard -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
-//                        .body(BodyInserters.fromValue(modBoard)));
-//    }
+    public Mono<ServerResponse> update(ServerRequest request) {
+        Long boardId = Long.valueOf(request.pathVariable("boardId"));
+
+        return request.bodyToMono(BoardEntity.class)
+                .flatMap(board
+                        -> Mono.fromCallable(()
+                        -> boardRepository.save(board)))
+                .flatMap(modBoard -> ServerResponse.ok().contentType(MediaType.APPLICATION_JSON)
+                        .body(BodyInserters.fromValue(modBoard)));
+    }
 
 
 //    public Mono<ServerResponse> update(ServerRequest request) {
