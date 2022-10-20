@@ -11,9 +11,9 @@ public class Board {
     private Long seq;
     private String subject;
     private String content;
-    private int hits;
-    private String ins_id;
-    private LocalDateTime ins_date;
-    private String mod_id;
-    private LocalDateTime mod_date;
+    private Integer hits;
+    private String createdId;
+    private LocalDateTime createdDate;
+    private String modifiedId;
+    private LocalDateTime modifiedDate;
 }

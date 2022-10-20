@@ -4,8 +4,7 @@ server:
 spring:
   application:
     name: demo-api
-  #main:
-  #  allow-bean-definition-overriding: true
+
   datasource:
     url: jdbc:mariadb://127.0.0.1:3306/demo_board?characterEncoding=UTF-8
     driverClassName: org.mariadb.jdbc.Driver
@@ -19,11 +18,6 @@ spring:
         format_sql: true
     hibernate:
       ddl-auto: none
-
-jdbc:
-  connection:
-    pool:
-      size: 5
 
 logging:
   level:

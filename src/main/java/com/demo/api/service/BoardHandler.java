@@ -5,14 +5,12 @@ import com.demo.api.domain.BoardEntity;
 import com.demo.api.domain.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.modelmapper.ModelMapper;
 import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.server.ServerRequest;
 import org.springframework.web.reactive.function.server.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 
@@ -24,9 +22,7 @@ import static org.springframework.web.reactive.function.server.ServerResponse.no
 @Slf4j
 public class BoardHandler {
 
-    final BoardRepository boardRepository;
-
-    //final Scheduler scheduler;
+    private final BoardRepository boardRepository;
 
     // 게시물 작성
     public Mono<ServerResponse> save(ServerRequest request) {
@@ -35,7 +31,7 @@ public class BoardHandler {
         return boardMono.flatMap(board
                         -> Mono.fromCallable(()
                         -> boardRepository.save(BoardEntity.builder()
-                        .ins_id(board.getIns_id())
+                        .createdId(board.getCreatedId())
                         .subject(board.getSubject())
                         .content(board.getContent())
                         .build())))
