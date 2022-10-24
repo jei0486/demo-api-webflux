@@ -1,10 +1,4 @@
-server:
-  port: 8088
-
 spring:
-  application:
-    name: demo-api
-
   datasource:
     url: jdbc:mariadb://127.0.0.1:3306/demo_board?characterEncoding=UTF-8
     driverClassName: org.mariadb.jdbc.Driver
@@ -18,6 +12,11 @@ spring:
         format_sql: true
     hibernate:
       ddl-auto: none
+#  config:
+#    activate:
+#      on-profile: production
+  application:
+    name: demo-api
 
 logging:
   level:
